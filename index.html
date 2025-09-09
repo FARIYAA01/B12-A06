@@ -81,74 +81,75 @@
             </div>
         </aside>
 
-        <!-- Cards -->
-        <section class="lg:col-span-7">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl md:text-2xl font-bold">Choose Your Trees</h2>
-                <div class="flex">
-                    <input id="searchInput" type="text" placeholder="Search trees"
-                        class="input input-sm input-bordered rounded-l-md" />
-                    <button id="searchBtn" class="btn btn-sm rounded-r-md">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                <!-- tree cards -->
-            </div>
-
-            <div id="cardsLoader" class="hidden mt-10 flex justify-center">
-                <span class="loading loading-spinner loading-lg text-green-600"></span>
-            </div>
-
-            <div id="emptyState" class="hidden mt-10 text-center text-gray-500">
-                <p>No trees found for this category.</p>
-            </div>
-        </section>
-
-        <!-- Cart -->
-        <aside class="lg:col-span-3">
-            <div class="bg-white shadow-md rounded-xl p-5 flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h3>
-                    <button id="clearCartBtn" class="btn btn-xs"><i class="fa-solid fa-trash"></i></button>
-                </div>
-                <ul id="cartList" class="space-y-3 max-h-80 overflow-auto pr-1">
-                    <!-- cart items -->
-                </ul>
-                <div class="divider"></div>
-                <div class="flex items-center justify-between font-semibold">
-                    <span>Total:</span>
-                    <span id="cartTotal">৳0</span>
-                </div>
-                <button id="checkoutBtn" class="btn btn-primary mt-3" disabled>
-                    <i class="fa-solid fa-check mr-2"></i>Checkout
-                </button>
-            </div>
-        </aside>
-    </main>
-
-    <!-- Modal -->
-    <dialog id="detailsModal" class="modal">
-        <div class="modal-box max-w-3xl">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </form>
-            <div id="modalContent" class="space-y-4">
-                <!-- dynamic content -->
-            </div>
+         <!-- Cards -->
+<section class="lg:col-span-7">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl md:text-2xl font-bold">Choose Your Trees</h2>
+        <div class="flex">
+            <input id="searchInput" type="text" placeholder="Search trees"
+                class="input input-sm input-bordered rounded-l-md bg-white" />
+            <button id="searchBtn" class="btn btn-sm rounded-r-md bg-white border">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
         </div>
-        <form method="dialog" class="modal-backdrop"><button>close</button></form>
-    </dialog>
+    </div>
 
-    <!-- Page Loader -->
-    <div id="pageLoader"
-        class="hidden fixed inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-50">
+    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+        <!-- tree cards -->
+    </div>
+
+    <div id="cardsLoader" class="hidden mt-10 flex justify-center">
         <span class="loading loading-spinner loading-lg text-green-600"></span>
     </div>
+
+    <div id="emptyState" class="hidden mt-10 text-center text-gray-500">
+        <p>No trees found for this category.</p>
+    </div>
+</section>
+
+<!-- Cart -->
+<aside class="lg:col-span-3">
+    <div class="bg-white shadow-md rounded-xl p-5 flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h3>
+            <button id="clearCartBtn" class="btn btn-xs"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <ul id="cartList" class="space-y-3 max-h-80 overflow-auto pr-1">
+            <!-- cart items -->
+        </ul>
+        <div class="divider"></div>
+        <div class="flex items-center justify-between font-semibold">
+            <span>Total:</span>
+            <span id="cartTotal">৳0</span>
+        </div>
+        <button id="checkoutBtn" class="btn btn-primary mt-3" disabled>
+            <i class="fa-solid fa-check mr-2"></i>Checkout
+        </button>
+    </div>
+</aside>
+
+<!-- Modal -->
+<dialog id="detailsModal" class="modal">
+    <div class="modal-box max-w-3xl bg-white">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </form>
+        <div id="modalContent" class="space-y-4">
+            <!-- dynamic content -->
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<!-- Page Loader -->
+<div id="pageLoader"
+    class="hidden fixed inset-0 bg-white flex items-center justify-center z-50">
+    <span class="loading loading-spinner loading-lg text-green-600"></span>
+</div>
+
+
 
     <script src="js/assign6.js"></script>
 </body>
