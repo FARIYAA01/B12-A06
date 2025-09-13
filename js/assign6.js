@@ -12,7 +12,8 @@ let cart = [];
 
 // Utilities
 const formatMoney = (amount) => `৳${Number(amount || 0).toLocaleString()}`;
-const truncateText = (str, maxLength = 90) => (str && str.length > maxLength ? str.slice(0, maxLength) + '…' : str || '');
+const truncateText = (str, maxLength = 90) =>
+  str && str.length > maxLength ? str.slice(0, maxLength) + '…' : str || '';
 const toggleLoader = (element, show = true) => element.classList.toggle('hidden', !show);
 
 function showError(message) {
@@ -45,7 +46,11 @@ async function loadCategories() {
     if (!res.ok) throw new Error('Failed to fetch categories: ' + res.status);
 
     const data = await res.json();
-    const categories = Array.isArray(data?.categories) ? data.categories : Array.isArray(data?.data) ? data.data : [];
+    const categories = Array.isArray(data?.categories)
+      ? data.categories
+      : Array.isArray(data?.data)
+      ? data.data
+      : [];
 
     categoryList.innerHTML = '';
 
@@ -71,13 +76,14 @@ async function loadCategories() {
 
 function createCategoryButton(category, isActive = false) {
   const btn = document.createElement('button');
-  // set text color to #1f2937 and border-white per request
-  btn.className = `btn btn-sm justify-start w-full mb-2 rounded-lg bg-white shadow-sm text-[#1f2937] border border-white ${isActive ? 'active-cat' : ''}`;
+  btn.className = `btn btn-sm justify-start w-full mb-2 rounded-lg bg-white shadow-sm text-[#1f2937] border border-white ${
+    isActive ? 'active-cat' : ''
+  }`;
   btn.textContent = category.name;
   btn.dataset.id = category.id;
 
   btn.addEventListener('click', () => {
-    document.querySelectorAll('#categoryList .btn').forEach(b => b.classList.remove('active-cat'));
+    document.querySelectorAll('#categoryList .btn').forEach((b) => b.classList.remove('active-cat'));
     btn.classList.add('active-cat');
     activeCategory = category.id;
     loadPlants(category.id);
@@ -102,7 +108,11 @@ async function loadPlants(categoryId = 'all') {
     if (!res.ok) throw new Error('Failed to fetch plants: ' + res.status);
 
     const data = await res.json();
-    const plants = Array.isArray(data?.plants) ? data.plants : Array.isArray(data?.data) ? data.data : [];
+    const plants = Array.isArray(data?.plants)
+      ? data.plants
+      : Array.isArray(data?.data)
+      ? data.data
+      : [];
     allPlantsCache = plants;
 
     renderPlantCards(plants);
@@ -132,27 +142,28 @@ function renderPlantCards(plants) {
     card.className = 'card bg-white shadow-sm rounded-2xl';
     card.innerHTML = `
       <figure class="px-4 pt-4">
-        <img src="${image}" class="rounded-xl h-40 w-full object-cover" alt="${name}" onerror="this.src='https://placehold.co/600x400?text=No+Image'"/>
+        <img src="${image}" class="rounded-xl h-40 w-full object-cover cursor-pointer" alt="${name}" data-open-details />
       </figure>
       <div class="card-body">
         <h3 class="font-bold text-lg text-emerald-800 hover:underline cursor-pointer" data-open-details>${name}</h3>
         <p class="text-sm opacity-80">${truncateText(shortDesc)}</p>
         <div class="flex items-center justify-between mt-2 text-sm">
-          <!-- badge background white and text color #1f2937 -->
           <span class="badge bg-white text-[#1f2937]">${category}</span>
           <span class="font-semibold">${formatMoney(price)}</span>
         </div>
         <div class="card-actions mt-3">
-          <!-- add to cart button rounded-full -->
           <button class="btn btn-success btn-sm rounded-full w-full" data-add-to-cart>Add to Cart</button>
         </div>
       </div>
     `;
 
-    card.querySelector('[data-open-details]').addEventListener('click', () => openDetails(id));
-    card.querySelector('[data-add-to-cart]').addEventListener('click', () =>
-      addToCart({ id, name, price })
+    // Open modal when clicking title or image
+    card.querySelectorAll('[data-open-details]').forEach((el) =>
+      el.addEventListener('click', () => openDetails(id))
     );
+
+    // Add to cart
+    card.querySelector('[data-add-to-cart]').addEventListener('click', () => addToCart({ id, name, price }));
 
     cardsGrid.appendChild(card);
   });
@@ -171,15 +182,22 @@ async function openDetails(id) {
     if (!res.ok) throw new Error('Failed to fetch details: ' + res.status);
 
     const data = await res.json();
-    const plant = data?.plant || data?.data || {};
-    const image = plant?.image || plant?.img || 'https://placehold.co/600x400?text=Tree';
+    // ✅ Fix: handle array from API
+    const plant = data?.plant || (Array.isArray(data?.data) ? data.data[0] : data?.data) || {};
+
+    const image = plant?.image || plant?.img || 'https://placehold.co/600x400?text=No+Image';
+    const description = plant?.description || plant?.short_description || 'No description available';
 
     modalContent.innerHTML = `
       <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
-        <img class="md:col-span-2 w-full h-56 object-cover rounded-xl" src="${image}" alt="${plant?.name || 'Tree'}" onerror="this.src='https://placehold.co/600x400?text=No+Image'" />
+        <img class="md:col-span-2 w-full h-56 object-cover rounded-xl" src="${image}" alt="${
+      plant?.name || 'Tree'
+    }" />
         <div class="md:col-span-3">
-          <h3 class="text-2xl font-extrabold text-emerald-800">${plant?.name || plant?.common_name || 'Tree'}</h3>
-          <p class="mt-2 opacity-80">${plant?.description || 'No description available.'}</p>
+          <h3 class="text-2xl font-extrabold text-emerald-800">${
+            plant?.name || plant?.common_name || 'Tree'
+          }</h3>
+          <p class="mt-2 opacity-80">${description}</p>
           <div class="mt-4 flex flex-wrap gap-2 text-sm">
             <span class="badge bg-white text-[#1f2937]">${plant?.category || 'Tree'}</span>
             <span class="badge badge-ghost">Height: ${plant?.height || '—'}</span>
@@ -215,6 +233,7 @@ async function openDetails(id) {
 function addToCart(item) {
   cart.push(item);
   renderCart();
+  alert('Added to cart!');
 }
 
 function removeFromCart(index) {
@@ -250,6 +269,25 @@ function renderCart() {
   cartTotal.textContent = formatMoney(total);
   checkoutBtn.disabled = cart.length === 0;
 }
+
+// Clear Cart Button
+document.getElementById('clearCartBtn')?.addEventListener('click', () => {
+  cart = [];
+  renderCart();
+});
+
+// Form Logging
+const form = document.querySelector('form');
+form?.addEventListener('submit', function (e) {
+  e.preventDefault(); // prevent page reload
+
+  const name = form.querySelector('input[type="text"]').value;
+  const email = form.querySelector('input[type="email"]').value;
+  const trees = form.querySelector('select').value;
+
+  console.log({ name, email, trees });
+  alert('Form submitted! Check console for values.');
+});
 
 // Initialization
 (async function init() {
